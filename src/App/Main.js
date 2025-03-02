@@ -9,6 +9,7 @@ import {
 import { switchTab } from 'actions/actionCreators';
 
 import Catalogue from './catalogue';
+import Products from './products';
 
 export default function Main() {
   const activeTab = useSelector((state) => state.ui.activeTab);
@@ -28,10 +29,17 @@ export default function Main() {
           >
             Catalogue
           </HorizontalTab>
+          <HorizontalTab
+            active={activeTab === 'Products'}
+            onClick={() => handleSwitchTab('Products')}
+          >
+            Products
+          </HorizontalTab>
         </HorizontalTab.TabBar>
       </div>
 
       <div>{activeTab === 'Catalogue' && <Catalogue />}</div>
+      <div>{activeTab === 'Products' && <Products />}</div>
 
     </Panel>
   );

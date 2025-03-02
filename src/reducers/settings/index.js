@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import showingConnections from './showingConnections';
+//import showingConnections from './showingConnections';
 
 export default combineReducers({
-  showingConnections,
+  //showingConnections,
 });

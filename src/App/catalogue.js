@@ -142,7 +142,7 @@ export default function Catalogue() {
         </SingleColRow>
         <SingleColRow>
             <div className="text-center">
-                <FieldSet title="Catalogue">
+                <FieldSet legend="Catalogue">
                     <tbody>
                         {renderCatalogueTable(catalogue)}
                     </tbody>

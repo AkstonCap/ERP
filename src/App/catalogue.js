@@ -13,6 +13,9 @@ import {
     showSuccessDialog,
     showErrorDialog,
     TextField,
+    Button,
+    Modal,
+    Select,
 } from 'nexus-module';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,9 +24,28 @@ import {
     updateInput,
 } from 'actions/actionCreators';
 
+import { createAsset } from 'actions/createAsset';
+
 const SearchField = styled(TextField)({
     maxWidth: 200,
   });
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 16px;
+`;
+
+const FormLabel = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+`;
 
 export default function Catalogue() {
 
@@ -31,7 +53,62 @@ export default function Catalogue() {
     //const catalogue = useSelector((state) => state.ui.catalogue);
     const [catalogue, setCatalogue] = useState([]);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newAsset, setNewAsset] = useState({
+        name: '',
+        category: '',
+        supplier: '',
+        description: '',
+        url: '',
+        status: 'active',
+        distordia: 'yes'
+    });
+    const [isCreating, setIsCreating] = useState(false);
+
     const dispatch = useDispatch();
+
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+    
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewAsset(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+    
+    const handleCreateAsset = async () => {
+        if (isCreating) return;
+        
+        try {
+            setIsCreating(true);
+            
+            await createAsset(
+                newAsset,
+                () => {
+                    // On success
+                    setNewAsset({
+                        name: '',
+                        category: '',
+                        supplier: '',
+                        description: '',
+                        url: '',
+                        status: 'active',
+                        distordia: 'yes'
+                    });
+                    setIsModalOpen(false);
+                    fetchCatalogue();
+                }
+            );
+            
+        } catch (error) {
+            // Error already handled by createAsset
+            console.error('Asset creation error:', error);
+        } finally {
+            setIsCreating(false);
+        }
+    };
 
     const fetchCatalogue = async () => {
         
